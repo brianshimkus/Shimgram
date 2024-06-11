@@ -35,6 +35,20 @@ app.post('/posts', async (req, res) => {
 	}
 })
 
+// Get all posts
+app.get('/posts', async (req, res) => {
+	try {
+		const posts = await Post.find({})
+
+		return res.status(200).json({
+			count: posts.length,
+			data: posts,
+		})
+	} catch (err) {
+		res.status(500).send(err)
+	}
+})
+
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => {
