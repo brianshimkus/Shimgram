@@ -62,6 +62,27 @@ app.get('/posts/:id', async (req, res) => {
 	}
 })
 
+// Update a post
+app.put('/posts/:id', async (req, res) => {
+	try {
+		if (!req.body.image || !req.body.caption) {
+			return res.status(400).send('Image and caption are required')
+		}
+
+		const { id } = req.params
+
+		const result = await Post.findByIdAndUpdate(id, req.body)
+
+		if (!result) {
+			return res.status(404).send('Post not found')
+		}
+
+		return res.status(200).send({ message: 'Post updated successfully' })
+	} catch (err) {
+		res.status(500).send(err)
+	}
+})
+
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => {
