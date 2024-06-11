@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 import colors from 'colors'
 
 dotenv.config()
@@ -11,6 +12,14 @@ app.get('/', (req, res) => {
 	res.send('Response from server')
 })
 
-app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}`.yellow)
-})
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		console.log('MongoDB connected'.cyan)
+		app.listen(PORT, () => {
+			console.log(`Server running on port ${PORT}`.yellow)
+		})
+	})
+	.catch((err) => {
+		console.log(err)
+	})
