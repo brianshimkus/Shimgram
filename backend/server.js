@@ -49,6 +49,19 @@ app.get('/posts', async (req, res) => {
 	}
 })
 
+// Get one post by id
+app.get('/posts/:id', async (req, res) => {
+	try {
+		const { id } = req.params
+
+		const post = await Post.findById(id)
+
+		return res.status(200).json(post)
+	} catch (err) {
+		res.status(500).send(err)
+	}
+})
+
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => {
