@@ -83,6 +83,23 @@ app.put('/posts/:id', async (req, res) => {
 	}
 })
 
+// Delete a post
+app.delete('/posts/:id', async (req, res) => {
+	try {
+		const { id } = req.params
+
+		const result = await Post.findByIdAndDelete(id)
+
+		if (!result) {
+			return res.status(404).send('Post not found')
+		}
+
+		return res.status(200).send({ message: 'Post deleted successfully' })
+	} catch (err) {
+		res.status(500).send(err)
+	}
+})
+
 mongoose
 	.connect(process.env.MONGO_URI)
 	.then(() => {
